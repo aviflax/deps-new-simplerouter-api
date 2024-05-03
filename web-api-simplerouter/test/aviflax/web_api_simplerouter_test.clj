@@ -1,4 +1,4 @@
-(ns aviflax.deps-new-simplerouter-api-test
+(ns aviflax.web-api-simplerouter-test
   (:require [clojure.edn :as edn]
             [clojure.java.io :as io]
             [clojure.spec.alpha :as s]

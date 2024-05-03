@@ -1,4 +1,4 @@
-(ns aviflax.deps-new-simplerouter-api)
+(ns aviflax.web-api-simplerouter)
 
 (defn data-fn
   "Example data-fn handler.
