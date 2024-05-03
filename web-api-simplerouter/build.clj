@@ -2,7 +2,7 @@
   (:refer-clojure :exclude [test])
   (:require [clojure.tools.build.api :as b]))
 
-(def lib 'net.clojars.aviflax/deps-new-simplerouter-api)
+(def lib 'net.clojars.aviflax/web-api-simplerouter)
 (def version "0.1.0-SNAPSHOT")
 #_ ; alternatively, use MAJOR.MINOR.COMMITS:
 (def version (format "1.0.%s" (b/git-count-revs nil)))

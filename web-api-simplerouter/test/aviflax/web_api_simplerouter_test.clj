@@ -4,7 +4,7 @@
             [clojure.spec.alpha :as s]
             [clojure.test :refer :all]
             [org.corfield.new] ; for the Specs
-            [aviflax.deps-new-simplerouter-api :refer :all]))
+            [aviflax.web-api-simplerouter :refer :all]))
 
 (deftest valid-template-test
   (testing "template.edn is valid."
