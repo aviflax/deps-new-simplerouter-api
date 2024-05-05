@@ -15,7 +15,7 @@
   ["src"
    "src/{{top/file}}"
    {"main.tmpl"                   "{{main/file}}.clj"
-    "ops/db/migrations.clj.tmpl"  "{{main/file}}/ops/db/migrations.clj"}]
+    "ops/db/migrations.tmpl.clj"  "{{main/file}}/ops/db/migrations.clj"}]
 
   ["test"
    "test/{{top/file}}"
