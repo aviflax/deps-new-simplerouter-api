@@ -14,4 +14,4 @@ fi
 # this variable is undefined.)
 echo "$DB_URL" >> /dev/null
 
-clojure -M:dev:socket-repl "$@"
+clojure -X:dev:socket-repl "$@"

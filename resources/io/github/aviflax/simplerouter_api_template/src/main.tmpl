@@ -1,10 +1,13 @@
 (ns {{top/ns}}.{{main/ns}}
   (:require
     [clojure.data.json :as json]
+    [clojure.string :as str]
     [next.jdbc :as jdbc]
     [clj-simple-router.core :as router]
     [ring.adapter.jetty :refer [run-jetty]]
     [ring.middleware.defaults :refer [api-defaults wrap-defaults]])
+  (:import
+    [java.util Date])
   (:gen-class))
 
 
@@ -41,20 +44,22 @@
       (wrap-defaults api-defaults)))
 
 
-(defn dbspec
+(defn db-spec
   []
-  "jdbc:postgresql://fpdb.orb.local/fpex?user=fpex")
+  {:post [string? (not? (str/blank %))]}
+  (get (System/getenv) "DB_URL"))
 
 
 (defn -main
   [& _args]
-  (reset! db-datasource (jdbc/get-datasource db-spec))
+  (reset! db-datasource (jdbc/get-datasource (db-spec)))
   (run-jetty (handler) {:port 3000 :join? true}))
 
 
 
 (comment
-  (reset! db-datasource (jdbc/get-datasource db-spec))
+  (reset! db-datasource (jdbc/get-datasource (db-spec)))
+  (is-db-up?)
 
   (defonce server (atom nil))
 
