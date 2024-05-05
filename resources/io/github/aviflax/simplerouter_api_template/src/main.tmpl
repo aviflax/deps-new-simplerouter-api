@@ -16,7 +16,7 @@
 
 (defn is-db-up?
   []
-  (boolean (jdbc/execute! @db-datasource ["SELECT"])))
+  (boolean (jdbc/execute! @db-datasource ["select"])))
 
 
 (def routes
