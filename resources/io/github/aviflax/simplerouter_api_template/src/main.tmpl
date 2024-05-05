@@ -46,7 +46,7 @@
 
 (defn db-spec
   []
-  {:post [string? (not? (str/blank %))]}
+  {:post [string? (not (str/blank? %))]}
   (get (System/getenv) "DB_URL"))
 
 
