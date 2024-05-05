@@ -6,11 +6,17 @@
  ;; this does not post-process the project but does print a message:
  :post-process-fn aviflax.web-api-simplerouter/post-process-fn
  :transform
- [["build" ""
+ [["build"
+   ""
    {"build.tmpl" "build.clj"
     "deps.tmpl"  "deps.edn"}
    :only]
-  ["src" "src/{{top/file}}"
-   {"main.tmpl" "{{main/file}}.clj"}]
-  ["test" "test/{{top/file}}"
+
+  ["src"
+   "src/{{top/file}}"
+   {"main.tmpl"                   "{{main/file}}.clj"
+    "ops/db/migrations.clj.tmpl"  "{{main/file}}/ops/db/migrations.clj"}]
+
+  ["test"
+   "test/{{top/file}}"
    {"main_test.tmpl" "{{main/file}}_test.clj"}]]}
