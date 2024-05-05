@@ -1,6 +1,42 @@
-(ns {{top/ns}}.{{main/ns}})
+(ns {{top/ns}}.{{main/ns}}
+  (:require
+    ; [clojure.string :as str]
+    [clj-simple-router.core :as router]
+    [ring.adapter.jetty :refer [run-jetty]]
+    [ring.middleware.defaults :refer [api-defaults wrap-defaults]])
+  (:gen-class))
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (prn x "Hello, World!"))
+
+(def routes
+  {"GET /healthz"  (constantly {:status 204})
+
+  "GET /things/"   (constantly {:status 200
+                                 :headers {"Content-Type" "application/json"}
+                                 :body "{\"things\": []}"})
+
+   "GET /things/*"  (fn [req]
+                      (let [[id] (:path-params req)]
+                        {:status 200
+                         :headers {"Content-Type" "application/json"}
+                         :body (format "{\"id\": %s}" id)}))})
+
+
+(defn handler
+  []
+  (-> (router/router routes)
+      (wrap-defaults api-defaults)))
+
+
+(defn -main
+  [& _args]
+  (run-jetty (handler) {:port 3000 :join? true}))
+
+
+
+(comment
+  (defonce server (atom nil))
+
+  (reset! server (run-jetty #((handler) %) {:port 3000 :join? false}))
+
+  (.stop @server)
+)
