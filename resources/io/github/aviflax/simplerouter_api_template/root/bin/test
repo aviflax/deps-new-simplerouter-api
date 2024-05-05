@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+## NB: run this from <repo-root>/
+
+set -eu
+
+if [ -e .env ]; then
+    set -a  # enable export of all environment variables
+    source .env
+    set +a  # disable export of all environment variables
+fi
+
+# One way or another, this env var must be set. (Because we enabled -u above, this will fail if
+# this variable is undefined.)
+echo "$DB_URL" >> /dev/null
+
+clojure -M:dev:run-tests "$@"
