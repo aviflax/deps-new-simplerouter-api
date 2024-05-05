@@ -20,22 +20,32 @@
 
 
 (def routes
-  {"GET /healthz"  (fn [_req]
-                     (let [db-up? (is-db-up?)]
-                       {:status (if db-up? 200 500)
-                        :headers {"Content-Type" "application/json"}
-                        :body (json/write-str {:time (str (Date. (System/currentTimeMillis)))
-                                               :database {:status (if db-up? "up" "down")}})}))
+  {"GET /healthz"
+   (fn health-get [_req]
+     (let [db-up? (is-db-up?)]
+       {:status (if db-up? 200 500)
+        :headers {"Content-Type" "application/json"}
+        :body (json/write-str {:time (str (Date. (System/currentTimeMillis)))
+                               :database {:status (if db-up? "up" "down")}})}))
 
-   "GET /things/"  (constantly {:status 200
-                                :headers {"Content-Type" "application/json"}
-                                :body "{\"things\": []}"})
+   "GET /things/"
+   (fn thing-get-coll [_req]
+     (let [things (sql/query @db-datasource ["select * from thing"] jdbc/snake-kebab-opts)]
+       {:status 200
+        :headers {"Content-Type" "application/json"}
+        :body (json/write-str {:things things})}))
 
-   "GET /things/*"  (fn [req]
-                      (let [[id] (:path-params req)]
-                        {:status 200
-                         :headers {"Content-Type" "application/json"}
-                         :body (format "{\"id\": %s}" id)}))})
+   "GET /things/*"
+   (fn thing-get-one [req]
+     (let [id (some-> req :path-params first parse-long)
+           thing (if (pos-int? id) (sql/get-by-id @db-datasource :thing id jdbc/snake-kebab-opts))]
+       (if thing
+         {:status 200
+          :headers {"Content-Type" "application/json"}
+          :body (json/write-str thing)}
+         {:status 404
+          :headers {"Content-Type" "text/plain"}
+          :body "Not found."})))})
 
 
 (defn handler

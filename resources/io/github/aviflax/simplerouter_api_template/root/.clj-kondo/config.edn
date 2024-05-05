@@ -1,0 +1,4 @@
+{:linters {;; see https://gist.github.com/technomancy/1e29d5a61ef8a61252257e8842ff5acc#when-vs-if
+           :missing-else-branch {:level :off}
+
+           :unresolved-var {:exclude [next.jdbc.types]}}}
